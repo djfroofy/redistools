@@ -6,7 +6,7 @@ local command = ARGV[1]
 local current_timestamp = ARGV[2]
 local lru_key = "_LRU_::" .. ARGV[3]
 local max_entries = ARGV[4]
-local ct, rval, to_remove, index, key
+local ct, rval, to_remove
 
 -- GET or SET the key
 
