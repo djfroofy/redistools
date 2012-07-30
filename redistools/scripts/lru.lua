@@ -27,7 +27,7 @@ end
 
 redis.call('ZADD', lru_key, current_timestamp, KEYS[1])
 ct = redis.call('ZCOUNT', lru_key, '-inf', '+inf')
-if ct > (max_entries + 10) then
+if ct >= (max_entries + 10) then
     to_remove = redis.call('ZRANGE', lru_key, 0, 9)
     redis.call('DEL', unpack(to_remove))
     redis.call('ZREMRANGEBYRANK', lru_key, 0, 9)
