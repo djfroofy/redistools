@@ -24,7 +24,7 @@ if rval == nil then
 end
 
 redis.call('ZINCRBY', lfu_key, 1, KEYS[1])
-ct = redis.call('ZCOUNT', lfu_key, '-inf', '+inf')
+ct = redis.call('ZCARD', lfu_key)
 if ct >= (max_entries + 10) then
     to_remove = redis.call('ZRANGE', lfu_key, 0, 9)
     redis.call('DEL', unpack(to_remove))
