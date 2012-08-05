@@ -1,6 +1,10 @@
--- LRU cache operations.
--- We score entries in a zset _LRU_::<namespace> with current timestamp for
--- each GET/SET operator and once over capacity, remove the oldest entry.
+-- LRU replacement strategy
+--
+-- Keys used in GET/SET are added to a zset _LFU_::<namsepace> with score
+-- starting at the given timestamp and with each read/write the score is
+-- updated again with the current timestamp. When the set is over capacity, the
+-- least recently used entries (lowest scores in the zset) are removed and
+-- corresponding keys deleted from the database.
 
 local command = ARGV[1]
 local current_timestamp = ARGV[2]
@@ -14,7 +18,7 @@ if command == 'GET' then
     rval = redis.call('GET', KEYS[1])
 else
     redis.call('SET', KEYS[1], ARGV[5])
-    rval = true;
+    rval = true
 end
 
 
