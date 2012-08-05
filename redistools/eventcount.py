@@ -19,11 +19,11 @@ class EventCount(object):
         """
         if client is None:
             client = Redis()
-        self.client = client
+        self._client = client
         self.key = key
         if maxevent:
-            self.client.setbit(key, maxevent, 1)
-            self.client.setbit(key, maxevent, 0)
+            self._client.setbit(key, maxevent, 1)
+            self._client.setbit(key, maxevent, 0)
 
     def record(self, eventid):
         """
@@ -31,13 +31,13 @@ class EventCount(object):
 
         eventid: The integr event id.
         """
-        self.client.setbit(self.key, eventid, 1)
+        self._client.setbit(self.key, eventid, 1)
 
     def count(self):
         """
         Return the number of ever occurences.
         """
-        return self.client.bitcount(self.key)
+        return self._client.bitcount(self.key)
 
     def happened(self, eventid):
         """
@@ -45,4 +45,4 @@ class EventCount(object):
 
         eventid: The integer event id
         """
-        return self.client.getbit(self.key, eventid)
+        return self._client.getbit(self.key, eventid)

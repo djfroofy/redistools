@@ -1,5 +1,3 @@
-import redis
-
 from redistools.lrucache import LruCache
 
 from tests.lib import RedisTestCase
