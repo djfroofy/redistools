@@ -1,15 +1,11 @@
-from unittest import TestCase
-
 import redis
 
 from redistools.lrucache import LruCache
 
+from tests.lib import RedisTestCase
 
-class LruCacheTestCase(TestCase):
 
-    def setUp(self):
-        self.client = redis.Redis(db=10)
-        self.client.flushdb()
+class LruCacheTestCase(RedisTestCase):
 
     def test_lru_cache_set_and_get(self):
         cache = LruCache('unittest')
