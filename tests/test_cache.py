@@ -1,4 +1,4 @@
-from redistools.lrucache import LruCache
+from redistools.cache import LruCache
 
 from tests.lib import RedisTestCase
 
