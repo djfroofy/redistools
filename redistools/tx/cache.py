@@ -1,12 +1,8 @@
-from twisted.internet import protocol, reactor
-
-from txredis.client import Redis
-
-from redistools.cache import LruCache, LfuCache, RRCache
+from redistools.tx.util import get_redis_client
 
 
 def get_cache(cache_class, namespace, max_entries=1000,
-              redis_host='localhost', redis_port=6379, redis_protocol=Redis):
+              redis_host='localhost', redis_port=6379, redis_protocol=None):
     """
     Utility API for get a cache instance with a txRedis client
     attached--instead of normal synchronous redis-py redis client.
@@ -30,7 +26,6 @@ def get_cache(cache_class, namespace, max_entries=1000,
         return cache_class(namespace, max_entries=max_entries,
                            client=client)
 
-    client_creator = protocol.ClientCreator(reactor, redis_protocol)
-    d = client_creator.connectTCP(redis_host, redis_port)
+    d = get_redis_client(redis_host, redis_port, redis_protocol)
     d.addCallback(got_connection)
     return d
